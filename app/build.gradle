@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+def getApiKey(){
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('secrets.properties')))
+    return props['OWM_KEY']
+}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -16,6 +22,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', "\""+getApiKey()+"\""
     }
 }
 
